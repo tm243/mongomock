@@ -12,7 +12,7 @@ import time
 import warnings
 
 try:
-    from bson import json_util, SON, BSON
+    from bson import json_util, SON, BSON, binary, CodecOptions
 except ImportError:
     json_utils = SON = BSON = None
 try:
@@ -502,7 +502,7 @@ class Collection(object):
 
         if BSON:
             # bson validation
-            BSON.encode(data, check_keys=True)
+            BSON.encode(data, check_keys=True, codec_options=CodecOptions(uuid_representation=binary.UuidRepresentation.STANDARD))
 
         # Like pymongo, we should fill the _id in the inserted dict (odd behavior,
         # but we need to stick to it), so we must patch in-place the data dict
